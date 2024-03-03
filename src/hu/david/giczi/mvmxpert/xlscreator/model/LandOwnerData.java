@@ -50,14 +50,19 @@ public class LandOwnerData {
     public void setStreetAndHouseNumber(String streetAndHouseNumber) {
         this.streetAndHouseNumber = streetAndHouseNumber;
     }
-
     public List<String> getParcelId() {
         return parcelId;
     }
-
+    public String getParcelIdData() {
+        return parcelId.toString().substring(1, parcelId.toString().indexOf("]"));
+    }
 
     public List<String> getOwnerShip() {
         return ownerShip;
+    }
+
+    public String getOwnerShipData(){
+        return ownerShip.toString().substring(1, ownerShip.toString().indexOf("]"));
     }
 
     @Override
