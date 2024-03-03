@@ -12,6 +12,8 @@ import java.util.Objects;
 public class FileProcess {
 
     public static List<LandOwnerData> OWNER_DATA;
+    public static String SUMMA_PARCEL_VALUE;
+    public static int INPUT_PARCEL_VALUE;
     private LandOwnerData landOwnerData;
     private String parcelId;
 
@@ -30,6 +32,7 @@ public class FileProcess {
                 setOwnerShip(line);
                 setOwnerName(line);
                 setOwnerHome(line);
+                setSummaParcelValue(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,6 +45,7 @@ public class FileProcess {
         if( input.length == 1 &&
                 input[0].split("/").length == 2 &&
                 Character.isDigit(input[0].charAt(0))){
+            INPUT_PARCEL_VALUE++;
             landOwnerData = new LandOwnerData();
             landOwnerData.getParcelId().add(input[0].trim());
             parcelId = landOwnerData.getParcelId().get(0);
@@ -68,7 +72,7 @@ public class FileProcess {
         if( line.startsWith(Prefix.OWNER_HOME_TEXT) ) {
             line = line.split(":")[1].trim();
             String[] addressData = line.split(",");
-            if( addressData.length == 1){
+            if( addressData.length == 1 ){
                 landOwnerData.setStreetAndHouseNumber(addressData[0].trim());
             }
             else{
@@ -87,9 +91,9 @@ public class FileProcess {
     }
 
     private void createLandOwner(){
-        if( landOwnerData != null && landOwnerData.getOwnerShip() != null &&
+        if( landOwnerData != null && !landOwnerData.getOwnerShip().isEmpty() &&
                 landOwnerData.getOwnerName() != null && landOwnerData.getHomeTown() != null &&
-                !landOwnerData.getParcelId().isEmpty() && landOwnerData.getStreetAndHouseNumber() != null) {
+                !landOwnerData.getParcelId().isEmpty() && landOwnerData.getStreetAndHouseNumber() != null ) {
             addLandOwner();
             landOwnerData = new LandOwnerData();
             landOwnerData.getParcelId().add(parcelId);
@@ -98,22 +102,27 @@ public class FileProcess {
 
     private void addLandOwner(){
 
-        if( !OWNER_DATA.contains(landOwnerData) && !landOwnerData.getOwnerShip().isEmpty() ){
+        if( !OWNER_DATA.contains(landOwnerData) ){
             OWNER_DATA.add(landOwnerData);
-            return;
         }
-        if( OWNER_DATA.contains(landOwnerData) ) {
+        else {
          OWNER_DATA.get(
                  OWNER_DATA.indexOf(landOwnerData))
                  .getParcelId()
                  .add(landOwnerData.getParcelId().get(0));
-            if( landOwnerData.getOwnerShip().isEmpty() ){
-                return;
-            }
          OWNER_DATA.get(
                  OWNER_DATA.indexOf(landOwnerData))
                     .getOwnerShip()
                     .add(landOwnerData.getOwnerShip().get(0));
         }
     }
+
+    private void setSummaParcelValue(String line){
+
+        if( line.trim().startsWith(Prefix.SUMMA_PARCEL_TEXT) ){
+            SUMMA_PARCEL_VALUE = line.substring(line.indexOf(":") + 1).trim();
+        }
+
+    }
+
 }
