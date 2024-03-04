@@ -87,21 +87,21 @@ public class FileProcess {
 
     private void setOwnerShip(String line){
         line = line.trim();
-        if( line.startsWith(Prefix.OWNER_SHIP_TEXT ) ) {
+        if( line.startsWith( Prefix.OWNER_SHIP_TEXT ) ) {
             landOwnerData.getOwnerShip().add(line.substring(line.indexOf(":") + 1).trim());
         }
     }
 
     private void setOwnerName(String line){
         line = line.trim();
-        if( line.startsWith(Prefix.OWNER_NAME_TEXT) ) {
+        if( line.startsWith( Prefix.OWNER_NAME_TEXT ) ) {
             landOwnerData.setOwnerName(line.substring(line.indexOf(":") + 1).trim());
         }
     }
 
     private void setOwnerHome(String line){
         line = line.trim();
-        if( line.startsWith(Prefix.OWNER_HOME_TEXT) ) {
+        if( line.startsWith( Prefix.OWNER_HOME_TEXT ) ) {
             line = line.split(":")[1].trim();
             String[] addressData = line.split(",");
             if( addressData.length == 1 ){
@@ -112,8 +112,8 @@ public class FileProcess {
             }
             String[] townData = addressData[0].trim().split("\\s+");
             if( townData.length == 1 ){
-                landOwnerData.setHomeTown(townData[0].trim());
                 landOwnerData.setZipCode(townData[0].trim());
+                landOwnerData.setHomeTown(townData[0].trim());
             }
             else{
                 landOwnerData.setZipCode(townData[0].trim());
@@ -124,9 +124,13 @@ public class FileProcess {
     }
 
     private void createLandOwner(){
-        if( landOwnerData != null && !landOwnerData.getOwnerShip().isEmpty() &&
-                landOwnerData.getOwnerName() != null && landOwnerData.getHomeTown() != null &&
-                !landOwnerData.getParcelId().isEmpty() && landOwnerData.getStreetAndHouseNumber() != null ) {
+        if( landOwnerData != null &&
+                !landOwnerData.getOwnerShip().isEmpty() &&
+                landOwnerData.getOwnerName() != null &&
+                landOwnerData.getZipCode() != null &&
+                landOwnerData.getHomeTown() != null &&
+                !landOwnerData.getParcelId().isEmpty() &&
+                landOwnerData.getStreetAndHouseNumber() != null ) {
             addLandOwner();
             landOwnerData = new LandOwnerData();
             landOwnerData.getParcelId().add(parcelId);
