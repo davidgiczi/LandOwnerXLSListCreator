@@ -51,20 +51,40 @@ public class FileProcess {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if( SUMMA_PARCEL_VALUE == null ){
+            SUMMA_PARCEL_VALUE = "0";
+        }
     }
 
     private void setParcelId(String line){
         line = line.trim();
-        String[] input = line.split("\\s+");
-        if( input.length == 1 &&
-                input[0].split("/").length == 2 &&
-                Character.isDigit(input[0].charAt(0))){
+        String[] inputData = line.split("\\s+");
+        String[] idData = inputData[0].split("/");
+        if( inputData.length == 1 && idData.length == 2 &&
+                isNumber(idData[0]) && isNumber(idData[1])  ){
             INPUT_PARCEL_VALUE++;
             landOwnerData = new LandOwnerData();
-            landOwnerData.getParcelId().add(input[0].trim());
+            landOwnerData.getParcelId().add(inputData[0].trim());
             parcelId = landOwnerData.getParcelId().get(0);
            createLandOwner();
         }
+        else if(inputData.length == 1 && idData.length == 1 &&
+        isNumber(idData[0]) ){
+            INPUT_PARCEL_VALUE++;
+            landOwnerData = new LandOwnerData();
+            landOwnerData.getParcelId().add(inputData[0].trim());
+            parcelId = landOwnerData.getParcelId().get(0);
+            createLandOwner();
+        }
+    }
+
+    private boolean isNumber(String numberValue) {
+        try {
+            Integer.parseInt(numberValue);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     private void setOwnerShip(String line){
@@ -203,6 +223,10 @@ public class FileProcess {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
             FOLDER_PATH = selectedFile.getPath();
+        }
+        else{
+            FOLDER_PATH = null;
+            FILE_NAME = null;
         }
     }
 

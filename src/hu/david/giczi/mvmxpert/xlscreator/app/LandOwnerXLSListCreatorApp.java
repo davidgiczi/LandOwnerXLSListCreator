@@ -16,7 +16,13 @@ public class LandOwnerXLSListCreatorApp {
       }
       fp.readData();
       fp.getReport();
+      if( FileProcess.OWNER_DATA.isEmpty() ){
+          System.exit(0);
+      }
       fp.openSaveFolder();
+        if( FileProcess.FOLDER_PATH == null || FileProcess.FILE_NAME == null ){
+            System.exit(0);
+        }
       fp.saveXLSFile();
     }
 
