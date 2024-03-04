@@ -25,7 +25,7 @@ public class FileProcess {
     public static String FILE_NAME;
     public static String FOLDER_PATH;
     public static List<LandOwnerData> OWNER_DATA;
-    public static String SUMMA_PARCEL_VALUE;
+    public static String SUMMA_PARCEL_VALUE = "0";
     public static int INPUT_PARCEL_VALUE;
     private LandOwnerData landOwnerData;
     private String parcelId;
@@ -51,9 +51,7 @@ public class FileProcess {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if( SUMMA_PARCEL_VALUE == null ){
-            SUMMA_PARCEL_VALUE = "0";
-        }
+
     }
 
     private void setParcelId(String line){
