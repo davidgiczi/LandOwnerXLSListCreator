@@ -261,34 +261,41 @@ public class FileProcess {
         font.setFontName("Calibri");
         font.setFontHeightInPoints((short) 11);
         dataStyle.setFont(font);
-        for( int i = 0; i < FileProcess.OWNER_DATA.size(); i++){
-         Row dataRow = sheet.createRow(i + 1);
-         Cell c0 = dataRow.createCell(0);
-         c0.setCellStyle(dataStyle);
-         c0.setCellValue( i + 1);
-         Cell c1 = dataRow.createCell(1);
-         c1.setCellStyle(dataStyle);
-         c1.setCellValue(FileProcess.OWNER_DATA.get(i).getHomeTown());
-         Cell c2 = dataRow.createCell(2);
-         c2.setCellStyle(dataStyle);
-         c2.setCellValue(FileProcess.OWNER_DATA.get(i).getParcelIdData());
-         Cell c3 = dataRow.createCell(3);
-         c3.setCellStyle(dataStyle);
-         c3.setCellValue(FileProcess.OWNER_DATA.get(i).getOwnerName());
-         Cell c4 = dataRow.createCell(4);
-         c4.setCellStyle(dataStyle);
-         c4.setCellValue(FileProcess.OWNER_DATA.get(i).getZipCode());
-         Cell c5 = dataRow.createCell(5);
-         c5.setCellStyle(dataStyle);
-         c5.setCellValue(FileProcess.OWNER_DATA.get(i).getHomeTown());
-         Cell c6= dataRow.createCell(6);
-         c6.setCellStyle(dataStyle);
-         c6.setCellValue(FileProcess.OWNER_DATA.get(i).getStreetAndHouseNumber());
-         Cell c7 = dataRow.createCell(7);
-         c7.setCellStyle(dataStyle);
-         c7.setCellValue(FileProcess.OWNER_DATA.get(i).getOwnerShipData());
+        int row = 1;
+        for( int i = 0; i < FileProcess.OWNER_DATA.size(); i++) {
+            Row dataRow = sheet.createRow(i + row );
+            Cell c0 = dataRow.createCell(0);
+            c0.setCellStyle(dataStyle);
+            c0.setCellValue(i + 1);
+            Cell c1 = dataRow.createCell(1);
+            c1.setCellStyle(dataStyle);
+            c1.setCellValue(FileProcess.OWNER_DATA.get(i).getOwnerName());
+            Cell c2 = dataRow.createCell(2);
+            c2.setCellStyle(dataStyle);
+            c2.setCellValue(FileProcess.OWNER_DATA.get(i).getHomeTown());
+            Cell c3 = dataRow.createCell(3);
+            c3.setCellStyle(dataStyle);
+            c3.setCellValue(FileProcess.OWNER_DATA.get(i).getZipCode());
+            Cell c4 = dataRow.createCell(4);
+            c4.setCellStyle(dataStyle);
+            c4.setCellValue(FileProcess.OWNER_DATA.get(i).getStreetAndHouseNumber());
+            Cell c5 = dataRow.createCell(5);
+            c5.setCellStyle(dataStyle);
+            c5.setCellValue(FileProcess.OWNER_DATA.get(i).getParcelId().get(0));
+            Cell c6 = dataRow.createCell(6);
+            c6.setCellStyle(dataStyle);
+            c6.setCellValue(FileProcess.OWNER_DATA.get(i).getOwnerShip().get(0));
+            int j;
+            for (j = 1; j < FileProcess.OWNER_DATA.get(i).getParcelId().size(); j++) {
+                dataRow = sheet.createRow(i + j + row);
+                Cell c = dataRow.createCell(5);
+                c.setCellValue(FileProcess.OWNER_DATA.get(i).getParcelId().get(j));
+                c = dataRow.createCell(6);
+                c.setCellValue(FileProcess.OWNER_DATA.get(i).getOwnerShip().get(j));
+            }
+            row += (j - 1);
         }
-    }
+ }
 
     private void addHeader(XSSFWorkbook workbook, XSSFSheet sheet){
         CellStyle headerStyle = workbook.createCellStyle();
@@ -298,8 +305,8 @@ public class FileProcess {
         font.setBold(true);
         headerStyle.setFont(font);
         sheet.setColumnWidth(0, 2000);
-        for(int i = 1; i < 8; i++){
-            sheet.setColumnWidth(i, 10000);
+        for(int i = 1; i < 7; i++){
+            sheet.setColumnWidth(i, 7000);
         }
         Row header = sheet.createRow(0);
         Cell c0 = header.createCell(0);
@@ -307,25 +314,22 @@ public class FileProcess {
         c0.setCellValue("Sorszám");
         Cell c1 = header.createCell(1);
         c1.setCellStyle(headerStyle);
-        c1.setCellValue("Település");
+        c1.setCellValue("Tulajdonos neve");
         Cell c2 = header.createCell(2);
         c2.setCellStyle(headerStyle);
-        c2.setCellValue("Helyrajzi szám");
+        c2.setCellValue("Település");
         Cell c3 = header.createCell(3);
         c3.setCellStyle(headerStyle);
-        c3.setCellValue("Tulajdonos neve");
+        c3.setCellValue("Irányítószám");
         Cell c4 = header.createCell(4);
         c4.setCellStyle(headerStyle);
-        c4.setCellValue("Irányítószám");
+        c4.setCellValue("Utca, házszám");
         Cell c5 = header.createCell(5);
         c5.setCellStyle(headerStyle);
-        c5.setCellValue("Település");
-        Cell c6 = header.createCell(6);
+        c5.setCellValue("Helyrajzi szám");
+        Cell c6 = header.createCell( 6);
         c6.setCellStyle(headerStyle);
-        c6.setCellValue("Utca, házszám");
-        Cell c7 = header.createCell(7);
-        c7.setCellStyle(headerStyle);
-        c7.setCellValue("Tulajdoni hányad");
+        c6.setCellValue("Tulajdoni hányad");
     }
     public void getInfoMessage(String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
